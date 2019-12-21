@@ -7,8 +7,6 @@ from rest_framework.views import APIView
 from .services import (CreateCollegeService, GetCollegeService, DeleteCollegeService, PutCollegeService,
                        CreateStudentService, GetStudentService, DeleteStudentService, PutStudentService)
 
-# Create your views here.
-
 
 class CollegeView(APIView):
     def post(self, request):
@@ -27,8 +25,6 @@ class CollegeView(APIView):
             serializer = CollegeSerializer(college_gt, many=True)
         return Response(serializer.data)
 
-
-
     def delete(self, request, pk):
         DeleteCollegeService.execute({'pk': pk})
         return Response(data={'Message': 'deleted'}, status=200)
@@ -45,6 +41,8 @@ class CollegeView(APIView):
 
 
 class StudentView(APIView):
+
+
     def post(self, request):
         data = request.data
         student_serializer = StudentSerializer(data=request.data)
@@ -62,10 +60,14 @@ class StudentView(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
+        """
+        """
         student_dlt = DeleteStudentService.execute({'pk': pk})
         return Response(data={'message': 'deleted'}, status=200)
 
     def put(self, request, pk):
+        """
+        """
         student_put = Student.objects.get(pk=pk)
         data = request.data
         serializer = StudentSerializer(student_put, data=request.data)
