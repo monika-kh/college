@@ -20,7 +20,8 @@ class CreateCollegeService(Service):
 class GetCollegeService(Service):
     def process(self):
         clg = self.data
-        pk = clg.get('pk')
+        pk = clg.get("pk")
+
         if pk:
             college_gt = College.objects.get(id=pk)
         else:
@@ -54,7 +55,6 @@ class PutCollegeService(Service):
         return clg_put
 
 
-
 class CreateStudentService(Service):
     def process(self):
         student = self.data
@@ -70,8 +70,8 @@ class CreateStudentService(Service):
 
 class GetStudentService(Service):
     def process(self):
-        std = self.data
-        pk = std.get('pk')
+        pk = self.data.get('pk')
+        breakpoint()
         if pk:
             student_get = Student.objects.get(id=pk)
         else:
