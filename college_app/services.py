@@ -6,13 +6,10 @@ class CreateCollegeService(Service):
     def process(self):
         coll = self.data
         post_data = coll.get("college_data")
-        college_name = post_data.get('college_name')
-        city = post_data.get('city')
-        state = post_data.get('state')
         college_obj = College.objects.create(
-            college_name=college_name,
-            city=city,
-            state=state
+            college_name=post_data.get('college_name'),
+            city=post_data.get('city'),
+            state=post_data.get('state')
         )
         return college_obj
 
@@ -58,6 +55,7 @@ class PutCollegeService(Service):
 class CreateStudentService(Service):
     def process(self):
         student = self.data
+        breakpoint()
         post_student = student.get('student_data')
         student_obj = Student.objects.create(
             first_name=post_student.get('first_name'),
@@ -71,7 +69,6 @@ class CreateStudentService(Service):
 class GetStudentService(Service):
     def process(self):
         pk = self.data.get('pk')
-        breakpoint()
         if pk:
             student_get = Student.objects.get(id=pk)
         else:

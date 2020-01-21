@@ -12,6 +12,7 @@ class CollegeView(APIView):
     def post(self, request):
         data = request.data
         college_serializer = CollegeSerializer(data=request.data)
+
         if college_serializer.is_valid(raise_exception=True):
             CreateCollegeService.execute({'college_data': request.data})
             return Response(college_serializer.data, status=201)
@@ -48,6 +49,7 @@ class StudentView(APIView):
         student_serializer = StudentSerializer(data=request.data)
         if student_serializer.is_valid():
             CreateStudentService.execute({'student_data': request.data})
+
             return Response(student_serializer.data, status=201)
         return Response(student_serializer.errors, status=400)
 
