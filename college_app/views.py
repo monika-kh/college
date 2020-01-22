@@ -1,11 +1,15 @@
 from django.shortcuts import render
-from .models import College, Student
-from college_app.serializers import CollegeSerializer, StudentSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .services import (CreateCollegeService, GetCollegeService, DeleteCollegeService, PutCollegeService,
-                       CreateStudentService, GetStudentService, DeleteStudentService, PutStudentService)
+
+from college_app.serializers import CollegeSerializer, StudentSerializer
+
+from .models import College, Student
+from .services import (CreateCollegeService, CreateStudentService,
+                       DeleteCollegeService, DeleteStudentService,
+                       GetCollegeService, GetStudentService, PutCollegeService,
+                       PutStudentService)
 
 
 class CollegeView(APIView):
@@ -14,12 +18,13 @@ class CollegeView(APIView):
         college_serializer = CollegeSerializer(data=request.data)
 
         if college_serializer.is_valid(raise_exception=True):
-            CreateCollegeService.execute({'college_data': request.data})
-            return Response(college_serializer.data, status=201)
+            college = CreateCollegeService.execute({"college_data": request.data})
+            serializer = CollegeSerializer(college)
+            return Response(serializer.data, status=201)
         return Response(college_serializer.errors, status=400)
 
-    def get(self, request, pk=None):
-        college_gt = GetCollegeService.execute({'pk': pk})
+    def get(self, pk=None):
+        college_gt = GetCollegeService.execute({"pk": pk})
         if pk:
             serializer = CollegeSerializer(college_gt)
         else:
@@ -27,34 +32,34 @@ class CollegeView(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        DeleteCollegeService.execute({'pk': pk})
-        return Response(data={'Message': 'deleted'}, status=200)
+        DeleteCollegeService.execute({"pk": pk})
+        return Response(data={"Message": "deleted"}, status=204)
 
     def put(self, request, pk):
         college_put = College.objects.get(pk=pk)
         data = request.data
         serializer = CollegeSerializer(college_put, data=request.data)
         if serializer.is_valid():
-            #PutCollegeService.execute({'pk': pk})
-            PutCollegeService.execute({'college_put': college_put, 'data': request.data})             # data sent to services
+            college_data = PutCollegeService.execute(
+                {"college_put": college_put, "data": request.data}
+            )  # data sent to services
+            serializer = CollegeSerializer(college_data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StudentView(APIView):
-
-
     def post(self, request):
         data = request.data
         student_serializer = StudentSerializer(data=request.data)
         if student_serializer.is_valid():
-            CreateStudentService.execute({'student_data': request.data})
-
-            return Response(student_serializer.data, status=201)
+            student = CreateStudentService.execute({"student_data": request.data})
+            serializer = StudentSerializer(student)
+            return Response(serializer.data, status=201)
         return Response(student_serializer.errors, status=400)
 
     def get(self, request, pk=None):
-        student_get = GetStudentService.execute({'pk': pk})
+        student_get = GetStudentService.execute({"pk": pk})
         if pk:
             serializer = StudentSerializer(student_get)
         else:
@@ -62,10 +67,8 @@ class StudentView(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        """
-        """
-        student_dlt = DeleteStudentService.execute({'pk': pk})
-        return Response(data={'message': 'deleted'}, status=200)
+        DeleteStudentService.execute({"pk": pk})
+        return Response(data={"message": "deleted"}, status=204)
 
     def put(self, request, pk):
         """
@@ -74,6 +77,9 @@ class StudentView(APIView):
         data = request.data
         serializer = StudentSerializer(student_put, data=request.data)
         if serializer.is_valid():
-            PutStudentService.execute({'student_put': student_put, 'data': request.data})       # data sent to services
+            student_data = PutStudentService.execute(
+                {"student_put": student_put, "data": request.data}
+            )  # data sent to services
+            serializer = StudentSerializer(student_data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

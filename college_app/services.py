@@ -7,9 +7,9 @@ class CreateCollegeService(Service):
         coll = self.data
         post_data = coll.get("college_data")
         college_obj = College.objects.create(
-            college_name=post_data.get('college_name'),
-            city=post_data.get('city'),
-            state=post_data.get('state')
+            college_name=post_data.get("college_name"),
+            city=post_data.get("city"),
+            state=post_data.get("state"),
         )
         return college_obj
 
@@ -29,21 +29,21 @@ class GetCollegeService(Service):
 class DeleteCollegeService(Service):
     def process(self):
 
-        pk = self.data.get('pk')
+        pk = self.data.get("pk")
         college_dlt = College.objects.get(pk=pk)
         college_dlt.delete()
 
 
 class PutCollegeService(Service):
     def process(self):
-        college_put = self.data                                    #data received from views
-        clg = college_put.get('data')
-        pk = clg.get('id')
+        college_put = self.data  # data received from views
+        clg = college_put.get("data")
+        pk = clg.get("id")
 
         clg_put = College.objects.get(pk=pk)
-        clg_name = clg.get('college_name')
-        clg_city = clg.get('city')
-        clg_state = clg.get('state')
+        clg_name = clg.get("college_name")
+        clg_city = clg.get("city")
+        clg_state = clg.get("state")
 
         clg_put.college_name = clg_name
         clg_put.city = clg_city
@@ -55,20 +55,19 @@ class PutCollegeService(Service):
 class CreateStudentService(Service):
     def process(self):
         student = self.data
-        breakpoint()
-        post_student = student.get('student_data')
+        post_student = student.get("student_data")
         student_obj = Student.objects.create(
-            first_name=post_student.get('first_name'),
-            last_name=post_student.get('last_name'),
-            branch=post_student.get('branch'),
-            dob=post_student.get('dob')
+            first_name=post_student.get("first_name"),
+            last_name=post_student.get("last_name"),
+            branch=post_student.get("branch"),
+            dob=post_student.get("dob"),
         )
         return student_obj
 
 
 class GetStudentService(Service):
     def process(self):
-        pk = self.data.get('pk')
+        pk = self.data.get("pk")
         if pk:
             student_get = Student.objects.get(id=pk)
         else:
@@ -78,7 +77,7 @@ class GetStudentService(Service):
 
 class DeleteStudentService(Service):
     def process(self):
-        pk = self.data.get('pk')
+        pk = self.data.get("pk")
         student_dlt = Student.objects.get(pk=pk)
         student_dlt.delete()
 
@@ -86,14 +85,14 @@ class DeleteStudentService(Service):
 class PutStudentService(Service):
     def process(self):
         student_put = self.data
-        student = student_put.get('data')
-        pk = student.get('id')
+        student = student_put.get("data")
+        pk = student.get("id")
 
         std_put = Student.objects.get(pk=pk)
-        first_name = student.get('first_name')
-        last_name = student.get('last_name')
-        branch = student.get('branch')
-        dob = student.get('dob')
+        first_name = student.get("first_name")
+        last_name = student.get("last_name")
+        branch = student.get("branch")
+        dob = student.get("dob")
 
         std_put.first_name = first_name
         std_put.last_name = last_name
@@ -101,13 +100,3 @@ class PutStudentService(Service):
         std_put.dob = dob
         std_put.save()
         return std_put
-
-
-
-
-
-
-
-
-
-
