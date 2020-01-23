@@ -23,7 +23,7 @@ class CollegeView(APIView):
             return Response(serializer.data, status=201)
         return Response(college_serializer.errors, status=400)
 
-    def get(self, pk=None):
+    def get(self, request, pk=None):
         college_gt = GetCollegeService.execute({"pk": pk})
         if pk:
             serializer = CollegeSerializer(college_gt)

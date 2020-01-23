@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
@@ -8,27 +7,28 @@ from college_app.serializers import CollegeSerializer, StudentSerializer
 
 class College_Test(APITestCase):  # without setup method
     def test_college(self):
-        data = {"college_name": "SGSITS", "city": "Indore", "state": "MP"}
+        self.data = {"college_name": "SGSITS", "city": "Indore", "state": "MP"}
 
         # res1 = self.client.post('/college/',data, format="json")        # url from browser
-        res = self.client.post(reverse("college"), data, format="json")
+        res = self.client.post(reverse("college1"), self.data, format="json")
         self.assertEqual(res.status_code, 201)
 
-        res2 = self.client.get(reverse("college"))
+        res2 = self.client.get(reverse("college1"))
         self.assertEqual(res2.status_code, 200)
 
-        res3 = self.client.get(reverse("college", kwargs={"pk": "1"}), data)
+        res3 = self.client.get(reverse("college2", kwargs={"pk": "1"}), self.data)
         self.assertEqual(res3.status_code, 200)
 
-        res4 = self.client.delete(reverse("college", kwargs={"pk": 1}))
-        self.assertEqual(res4.status_code, 204)
 
-        data1 = {"college_name": "LNCT", "city": "Bhopal", "state": "UP"}
-        res5 = self.client.put("college/1/", data1, format="json")
-        # res5 = self.client.put(reverse('college', args=[{'pk':1}]), data)
-        # res5 = self.client.put(reverse('college', kwargs={'pk': '1'}), data1)
-        # res5 = self.client.put("college/1/", data1={"college_name": "gsits", "city": "ujjain", "state": "up"}, format="json")
+        # data1 = {"college_name": "LNCT", "city": "Bhopal", "state": "UP"}
+        # res4 = self.client.put("college/1/", data1, format="json")
+        res4 = self.client.put('/college2/1/', kwargs={'pk':self.data.pk}, data=self.data)
+        # # res4 = self.client.put(reverse('college', kwargs={'pk': '1'}), data1)
+        # # res4 = self.client.put("college/1/", data1={"college_name": "gsits", "city": "ujjain", "state": "up"}, format="json")
         breakpoint()
+
+        res5 = self.client.delete(reverse("college2", kwargs={"pk": 1}))
+        self.assertEqual(res5.status_code, 204)
 
 
 # class Student_Test(APITestCase):
@@ -58,7 +58,7 @@ class GetStudentTest(APITestCase):
         self.assertEqual(res2.status_code, 200)
 
     def test_get_pk_student(self):
-        res3 = self.client.get(reverse("student", args=[self.student.id]))
+        res3 = self.client.get(reverse("student2", args=[self.student.id]))
         self.assertEqual(res3.status_code, 200)
 
 
@@ -78,7 +78,7 @@ class PutStudentTest(APITestCase):
         )
 
     def test_update_student(self,):
-        res4 = self.client.put(reverse("student", args=[self.student.id]), self.data)
+        res4 = self.client.put(reverse("student2", args=[self.student.id]), self.data)
         self.assertEqual(res4.status_code, 200)
 
 
