@@ -9,7 +9,6 @@ class College_Test(APITestCase):  # without setup method
     def test_college(self):
         self.data = {"college_name": "SGSITS", "city": "Indore", "state": "MP"}
 
-        # res1 = self.client.post('/college/',data, format="json")        # url from browser
         res = self.client.post(reverse("college1"), self.data, format="json")
         self.assertEqual(res.status_code, 201)
 
@@ -19,12 +18,9 @@ class College_Test(APITestCase):  # without setup method
         res3 = self.client.get(reverse("college2", kwargs={"pk": "1"}), self.data)
         self.assertEqual(res3.status_code, 200)
 
-
-        # data1 = {"college_name": "LNCT", "city": "Bhopal", "state": "UP"}
-        # res4 = self.client.put("college/1/", data1, format="json")
-        res4 = self.client.put('/college2/1/', kwargs={'pk':self.data.pk}, data=self.data)
-        # # res4 = self.client.put(reverse('college', kwargs={'pk': '1'}), data1)
-        # # res4 = self.client.put("college/1/", data1={"college_name": "gsits", "city": "ujjain", "state": "up"}, format="json")
+        self.data1 = {"college_name": "LNCT", "city": "Bhopal", "state": "UP"}
+        url = reverse('college2', args=[res3.data['id']])
+        res4 = self.client.put(url, data=self.data1)
         breakpoint()
 
         res5 = self.client.delete(reverse("college2", kwargs={"pk": 1}))
@@ -77,7 +73,7 @@ class PutStudentTest(APITestCase):
             }
         )
 
-    def test_update_student(self,):
+    def test_update_student(self):
         res4 = self.client.put(reverse("student2", args=[self.student.id]), self.data)
         self.assertEqual(res4.status_code, 200)
 

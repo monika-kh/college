@@ -38,7 +38,7 @@ class PutCollegeService(Service):
     def process(self):
         college_put = self.data  # data received from views
         clg = college_put.get("data")
-        pk = clg.get("id")
+        pk = self.data.get('pk')
 
         clg_put = College.objects.get(pk=pk)
         clg_name = clg.get("college_name")

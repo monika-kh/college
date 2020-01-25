@@ -41,8 +41,8 @@ class CollegeView(APIView):
         serializer = CollegeSerializer(college_put, data=request.data)
         if serializer.is_valid():
             college_data = PutCollegeService.execute(
-                {"college_put": college_put, "data": request.data}
-            )  # data sent to services
+                {"college_put": college_put, "data": request.data, "pk": pk}
+            )  # data sent to services"
             serializer = CollegeSerializer(college_data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
