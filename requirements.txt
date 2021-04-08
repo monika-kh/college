@@ -6,7 +6,7 @@ billiard==3.3.0.23
 black==19.10b0
 celery==3.1.26.post2
 Click==7.0
-Django==2.2.7
+Django==2.2.20
 django-service-objects==0.6.0
 djangorestframework==3.11.0
 entrypoints==0.3
